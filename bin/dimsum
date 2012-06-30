@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+
+options = {}
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: sample.rb [options]"
+  opts.on("-n [Fixnum]", "--number [Fixnum]", "") do |n|
+    options[:lines] = n
+  end
+end.parse!
+
+filename = ARGV[0]
+lines = options[:lines].to_i
+raise ArgumentError, "The filename is required" unless filename
+
+file_size = `wc -l #{filename}`.strip.to_i
+
+last_2 = `tail -c2 #{filename}`
+if last_2 == "\n\n"
+  file_size -= 1
+end
+
+random = Random.new
+
+File.open(filename, "r").lines do |line|
+  if file_size == 0
+    next
+  end
+  r = random.rand(0 .. file_size - 1)
+  if r < lines
+    STDOUT.print line
+    STDOUT.flush
+    lines -= 1
+  end
+  file_size -= 1
+end
+
