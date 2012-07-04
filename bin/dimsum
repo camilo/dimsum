@@ -18,8 +18,6 @@ lines = options[:lines].to_i
 if ARGV.length > 0
 
   filename = ARGV[0]
-  raise ArgumentError, "The filename is required" unless filename
-
   file_size = `wc -l #{filename}`.strip.to_i
 
   last_2 = `tail -c2 #{filename}`
