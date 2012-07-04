@@ -11,29 +11,45 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-filename = ARGV[0]
-lines = options[:lines].to_i
-raise ArgumentError, "The filename is required" unless filename
-
-file_size = `wc -l #{filename}`.strip.to_i
-
-last_2 = `tail -c2 #{filename}`
-if last_2 == "\n\n"
-  file_size -= 1
-end
-
+options[:lines] ||= "5"
 random = Random.new
+lines = options[:lines].to_i
 
-File.open(filename, "r").lines do |line|
-  if file_size == 0
-    next
+if ARGV.length > 0
+
+  filename = ARGV[0]
+  file_size = `wc -l #{filename}`.strip.to_i
+
+  last_2 = `tail -c2 #{filename}`
+  if last_2 == "\n\n"
+    file_size -= 1
   end
-  r = random.rand(0 .. file_size - 1)
-  if r < lines
-    STDOUT.print line
-    STDOUT.flush
-    lines -= 1
+
+  File.open(filename, "r").lines do |line|
+    if file_size == 0
+      next
+    end
+    r = random.rand(0 .. file_size - 1)
+    if r < lines
+      STDOUT.print line
+      STDOUT.flush
+      lines -= 1
+    end
+    file_size -= 1
   end
-  file_size -= 1
+else
+  inputLineNumber = 0
+  output = []
+  STDIN.read.split("\n").each do |a|
+    if inputLineNumber < lines
+      output.push a
+    else
+      r = random.rand(0 .. inputLineNumber)
+      if r < lines
+        output[r] = a
+      end
+    end
+    inputLineNumber += 1
+  end
+  STDOUT.print output.join("\n") + "\n"
 end
-
