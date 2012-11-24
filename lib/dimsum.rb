@@ -27,7 +27,7 @@ module Dimsum
   end
 
   def keep_line_in_index(input_line_number, sample_size, random_number_generator)
-    if input_line_number <= sample_size
+    if input_line_number < sample_size
       [true, input_line_number]
     else
       r = random_number_generator.rand(0 .. input_line_number)
