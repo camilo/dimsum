@@ -19,7 +19,12 @@ Or install it yourself as:
 
 ## Usage
 ```sh
-sample.rb  filename
+dimsum filename
+  -n, --number [Fixnum]
+```
+or
+```sh
+cat filename | dimsum
   -n, --number [Fixnum]
 ```
 ## Contributing
