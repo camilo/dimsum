@@ -17,7 +17,7 @@ module Dimsum
     input_line_number = 0
     out = []
 
-    STDIN.readlines.each do |line|
+    STDIN.each_line do |line|
       keep, index = keep_line_in_index(input_line_number, sample_size,  random)
       out[index] = line if keep
       input_line_number += 1
