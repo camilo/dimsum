@@ -1,7 +1,7 @@
 # Dimsum
 
 Dimsum takes a file and a number of lines and prints a reservoir sample of the
-file to stadard output
+file to standard output
 
 ## Installation
 
